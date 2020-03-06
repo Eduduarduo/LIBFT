@@ -12,62 +12,50 @@
 
 #include "libft.h"
 
-static int			ft_cntwrd(char const *s, char c)
+long		ft_split_count(const char *s, char c)
 {
-	unsigned int	i;
-	int				cntr;
+	long	i;
+	long	count;
 
 	i = 0;
-	cntr = 0;
+	count = 0;
 	while (s[i])
 	{
 		while (s[i] == c)
 			i++;
-		if (s[i] != '\0')
-			cntr++;
-		while (s[i] && (s[i] != c))
-			i++;
-	}
-	return (cntr);
-}
-
-static char			*ft_strndup(const char *s, size_t n)
-{
-	char			*str;
-
-	str = (char *)malloc(sizeof(char) * n + 1);
-	if (str == NULL)
-		return (NULL);
-	str = ft_strncpy(str, s, n);
-	str[n] = '\0';
-	return (str);
-}
-
-char				**ft_split(char const *s, char c)
-{
-	int				i;
-	int				j;
-	int				k;
-	char			**tab;
-
-	i = 0;
-	k = 0;
-	tab = (char **)malloc(sizeof(char *) * (ft_cntwrd(s, c)) + 1);
-	if (tab == NULL)
-		return (NULL);
-	while (s[i])
-	{
-		while (s[i] == c)
-			i++;
-		j = i;
+		if (s[i])
+			count++;
 		while (s[i] && s[i] != c)
 			i++;
-		if (i > j)
-		{
-			tab[k] = ft_strndup(s + j, i - j);
-			k++;
-		}
 	}
-	tab[k] = NULL;
-	return (tab);
+	return (count);
+}
+
+char		**ft_split(char const *s, char c)
+{
+	char	**strs;
+	long	start;
+	long	end;
+	long	i;
+
+	if (s == NULL)
+		return (NULL);
+	if (!(strs = (char **)malloc(sizeof(char *) * (ft_split_count(s, c) + 1))))
+		return (NULL);
+	start = 0;
+	i = -1;
+	end = 0;
+	while (++i != ft_split_count(s, c))
+	{
+		while (s[start] == c)
+			start++;
+		end = start;
+		while (s[end] && s[end] != c)
+			end++;
+		if (!(strs[i] = ft_substr(s, start, (end - start))))
+			return (NULL);
+		start = end;
+	}
+	strs[i] = 0;
+	return (strs);
 }

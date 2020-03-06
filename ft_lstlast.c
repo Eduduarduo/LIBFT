@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_lstlast.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edbarbos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/30 20:21:21 by edbarbos          #+#    #+#             */
-/*   Updated: 2020/01/30 20:21:37 by edbarbos         ###   ########.fr       */
+/*   Created: 2020/03/05 14:24:34 by edbarbos          #+#    #+#             */
+/*   Updated: 2020/03/05 14:24:39 by edbarbos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+t_list		*ft_lstlast(t_list *lst)
 {
-	size_t		i;
-	char		*str;
+	t_list *element;
 
-	if (!s)
-		return (NULL);
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s)) + 1);
-	if (str == NULL)
-		return (NULL);
-	i = 0;
-	while (s[i] != '\0')
+	element = lst;
+	while (lst != NULL)
 	{
-		str[i] = f(i, s[i]);
-		i++;
+		element = lst;
+		lst = lst->next;
 	}
-	if (i > 0)
-		str[i] = '\0';
-	return (str);
+	return (element);
 }
